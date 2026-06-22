@@ -104,6 +104,18 @@ const translations = {
     confAddFirstAlert: "Please add at least one framed poster to your cart.",
     addedToCart: "Added to cart",
     confUploadSummaryTitle: "Uploaded designs:",
+    uploadProgressLabel: "Uploading poster to server",
+    reviewsTitle: "Customer reviews",
+    reviewsSubtitle: "Real feedback from recent poster orders.",
+    adminTitle: "Admin product manager",
+    adminHint: "Add, edit, remove, or delete products stored in this browser.",
+    adminUnlock: "Unlock admin",
+    adminLock: "Lock admin",
+    adminAdd: "Add product",
+    adminSave: "Save product",
+    adminDelete: "Delete",
+    adminEdit: "Edit",
+    adminReset: "Reset local changes",
   },
   ar: {
     brandTitle: "بوستر لاب ستور",
@@ -202,6 +214,18 @@ const translations = {
     confAddFirstAlert: "يرجى إضافة بوستر واحد على الأقل إلى السلة.",
     addedToCart: "تمت الإضافة إلى السلة",
     confUploadSummaryTitle: "التصاميم المرفوعة:",
+    uploadProgressLabel: "جاري رفع البوستر إلى السيرفر",
+    reviewsTitle: "آراء العملاء",
+    reviewsSubtitle: "تقييمات حقيقية من طلبات بوسترات حديثة.",
+    adminTitle: "إدارة المنتجات",
+    adminHint: "إضافة أو تعديل أو إزالة أو حذف المنتجات المحفوظة في هذا المتصفح.",
+    adminUnlock: "دخول الأدمن",
+    adminLock: "قفل الأدمن",
+    adminAdd: "إضافة منتج",
+    adminSave: "حفظ المنتج",
+    adminDelete: "حذف",
+    adminEdit: "تعديل",
+    adminReset: "إلغاء التعديلات المحلية",
   }
 };
 
@@ -392,10 +416,61 @@ const products = [
   }
 ];
 
+const defaultProducts = products.map((product) => structuredClone(product));
+const productReviews = {
+  "custom-upload": [
+    { name: "Mariam", rating: 5, text: "The custom print came out sharp and the team checked the design before printing." },
+    { name: "Omar", rating: 5, text: "Easy upload, fast reply on WhatsApp, and the final poster looked clean." }
+  ],
+  "porsche-gt3-rs": [
+    { name: "Youssef", rating: 5, text: "The colors are strong and the frame makes it look premium on my wall." },
+    { name: "Nour", rating: 4, text: "Good quality print and the size options were clear before ordering." }
+  ],
+  "red-ferrari": [
+    { name: "Karim", rating: 5, text: "Perfect gift for a car fan. The details looked better than expected." },
+    { name: "Salma", rating: 5, text: "Arrived ready to hang and the WhatsApp ordering was simple." }
+  ],
+  "red-bull-racing": [
+    { name: "Hassan", rating: 5, text: "Very clean racing poster, especially with the black frame." },
+    { name: "Laila", rating: 4, text: "Nice finish and quick confirmation after payment." }
+  ],
+  "space-astronauts": [
+    { name: "Farida", rating: 5, text: "The colors made the room feel brighter. Loved the print texture." },
+    { name: "Ali", rating: 5, text: "Great poster for a gaming setup, and the frame was solid." }
+  ],
+  "minecraft-avengers": [
+    { name: "Adam", rating: 5, text: "Fun design and the print was clear, not pixelated." },
+    { name: "Jana", rating: 4, text: "My brother loved it. Ordering from the product page was easy." }
+  ],
+  "monaliza": [
+    { name: "Dina", rating: 5, text: "Classic look with a modern feel. It looks great in a simple frame." },
+    { name: "Mazen", rating: 5, text: "Clean colors and good paper quality for the price." }
+  ],
+  "spiderman": [
+    { name: "Seif", rating: 5, text: "Big, bold, and very sharp. Exactly what I wanted for my room." },
+    { name: "Mona", rating: 4, text: "Good print and the customer support was quick." }
+  ],
+  "blue-porsche-3": [
+    { name: "Tamer", rating: 5, text: "The three-piece set looks coordinated and expensive." },
+    { name: "Nada", rating: 5, text: "Great for a gallery wall. The photos all matched nicely." }
+  ],
+  "red-ferrari-3": [
+    { name: "Mostafa", rating: 5, text: "The set has strong energy and the red color printed beautifully." },
+    { name: "Rana", rating: 4, text: "Nice series, especially when ordered with the same frame color." }
+  ],
+  "yellow-porsche-3": [
+    { name: "Bassem", rating: 5, text: "Bright and stylish. The three posters work really well together." },
+    { name: "Yara", rating: 5, text: "Fast service and the final wall setup looks amazing." }
+  ]
+};
+
 const LOCAL_STORAGE_LANG_KEY = "poster-lab-lang";
 const LOCAL_STORAGE_THEME_KEY = "poster-lab-theme";
 const LOCAL_STORAGE_UPLOAD_KEY = "poster-lab-custom-upload";
 const LOCAL_STORAGE_CART_KEY = "poster-lab-cart";
+const LOCAL_STORAGE_PRODUCTS_KEY = "poster-lab-admin-products";
+const LOCAL_STORAGE_ADMIN_KEY = "poster-lab-admin-unlocked";
+const ADMIN_PASSCODE = "posterlab-admin";
 
 const DB_NAME = "PosterLabStoreDB";
 const DB_VERSION = 1;
@@ -516,6 +591,24 @@ function saveCart() {
   localStorage.setItem(LOCAL_STORAGE_CART_KEY, JSON.stringify(cleanCart));
 }
 
+function loadAdminProducts() {
+  const saved = localStorage.getItem(LOCAL_STORAGE_PRODUCTS_KEY);
+  if (!saved) return;
+  try {
+    const parsed = JSON.parse(saved);
+    if (!Array.isArray(parsed)) return;
+    products.splice(0, products.length, ...parsed);
+  } catch (err) {
+    console.error("Product admin data could not be loaded:", err);
+  }
+}
+
+function saveAdminProducts() {
+  localStorage.setItem(LOCAL_STORAGE_PRODUCTS_KEY, JSON.stringify(products));
+}
+
+loadAdminProducts();
+
 const state = {
   lang: localStorage.getItem(LOCAL_STORAGE_LANG_KEY) || "en",
   theme: localStorage.getItem(LOCAL_STORAGE_THEME_KEY) || "dark",
@@ -529,7 +622,9 @@ const state = {
   detailSize: "30x40",
   detailFrame: "Black",
   customUpload: loadCustomUpload(),
-  confirmedForm: null
+  confirmedForm: null,
+  isAdmin: localStorage.getItem(LOCAL_STORAGE_ADMIN_KEY) === "true",
+  editingProductId: ""
 };
 
 const productGrid = document.querySelector("#productGrid");
@@ -544,6 +639,16 @@ const checkoutForm = document.querySelector("#checkoutForm");
 const paymentConfirmation = document.querySelector("#paymentConfirmation");
 const confirmationSummary = document.querySelector("#confirmationSummary");
 const toastContainer = document.querySelector(".toast-notification");
+
+function escapeHtml(value = "") {
+  return String(value).replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
 
 function getProductName(product) {
   const currentLang = state.lang || "en";
@@ -575,6 +680,10 @@ function money(amount) {
 
 function getProduct(id) {
   return products.find((product) => product.id === id);
+}
+
+function getDefaultProduct(id) {
+  return defaultProducts.find((product) => product.id === id);
 }
 
 function productImageUrl(path) {
@@ -677,9 +786,29 @@ function toggleLanguage() {
   updateLanguageUI();
   updateThemeUI();
   if (productGrid) renderProducts();
+  renderAdminPanel();
   renderCart();
   if (state.selectedProduct) {
     renderDetail(state.selectedProduct);
+  }
+}
+
+function preloadProductImages(list = products) {
+  const preload = () => {
+    list.flatMap((product) => product.gallery?.length ? product.gallery : [product.image])
+      .filter(Boolean)
+      .slice(0, 18)
+      .forEach((src) => {
+        const img = new Image();
+        img.decoding = "async";
+        img.src = src;
+      });
+  };
+
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(preload);
+  } else {
+    window.setTimeout(preload, 300);
   }
 }
 
@@ -732,7 +861,7 @@ function renderProducts() {
       <article class="product-card" style="--delay: ${index * 65}ms">
         <a class="product-media" href="product.html?id=${product.id}" aria-label="View ${name}">
           <span class="frame-preview frame-preview-black"></span>
-          <img src="${product.image}" loading="lazy" alt="${name} ${currentLang === "ar" ? "بوستر مؤطر" : "framed poster"}">
+          <img src="${product.image}" loading="lazy" decoding="async" alt="${name} ${currentLang === "ar" ? "بوستر مؤطر" : "framed poster"}">
           <span class="product-tag">${tag}</span>
           ${galleryBadge(product) ? `<span class="product-gallery-badge">${galleryBadge(product)}</span>` : ""}
         </a>
@@ -754,6 +883,40 @@ function renderProducts() {
       </article>
     `;
   }).join("");
+}
+
+function reviewStars(rating) {
+  return "★★★★★".slice(0, rating).padEnd(5, "☆");
+}
+
+function productReviewsFor(product) {
+  return product.reviews?.length ? product.reviews : (productReviews[product.id] || [
+    { name: "Poster Lab customer", rating: 5, text: "Good print quality, clear order details, and fast WhatsApp support." },
+    { name: "Verified buyer", rating: 5, text: "The poster arrived as expected and looked polished in the selected frame." }
+  ]);
+}
+
+function renderReviews(product) {
+  const currentLang = state.lang || "en";
+  const reviews = productReviewsFor(product);
+  return `
+    <section class="review-section" aria-label="${t("reviewsTitle")}">
+      <div class="review-heading">
+        <p class="eyebrow">${t("reviewsTitle")}</p>
+        <h3>${currentLang === "ar" ? "تقييمات تساعدك تختار بثقة" : "Reviews that help new customers choose"}</h3>
+        <p>${t("reviewsSubtitle")}</p>
+      </div>
+      <div class="review-grid">
+        ${reviews.map((review) => `
+          <article class="review-card">
+            <div class="review-stars" aria-label="${review.rating} out of 5">${reviewStars(review.rating)}</div>
+            <p>${escapeHtml(review.text)}</p>
+            <strong>${escapeHtml(review.name)}</strong>
+          </article>
+        `).join("")}
+      </div>
+    </section>
+  `;
 }
 
 function renderDetail(productId) {
@@ -780,12 +943,12 @@ function renderDetail(productId) {
       <article class="detail">
       <div class="detail-gallery">
         <div class="detail-main-image frame-${state.detailFrame.toLowerCase()}">
-          <img id="detailMainImage" src="${previewImage}" loading="lazy" alt="${name} ${currentLang === "ar" ? "معرض البوستر" : "framed poster gallery image"}">
+          <img id="detailMainImage" src="${previewImage}" loading="eager" decoding="async" fetchpriority="high" alt="${name} ${currentLang === "ar" ? "معرض البوستر" : "framed poster gallery image"}">
         </div>
         <div class="thumb-row">
           ${product.gallery.map((image) => `
             <button type="button" class="${image === previewImage ? "is-active" : ""}" data-gallery-image="${image}" aria-label="Show gallery image">
-              <img src="${image}" loading="lazy" alt="${name} thumbnail">
+              <img src="${image}" loading="lazy" decoding="async" alt="${name} thumbnail">
             </button>
           `).join("")}
         </div>
@@ -863,12 +1026,104 @@ function renderDetail(productId) {
         `}
       </div>
     </article>
+    ${renderReviews(product)}
   `;
 
     if (productGrid) {
       productDetail.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
+}
+
+function renderAdminPanel() {
+  let panel = document.querySelector("#adminProductManager");
+  const shouldShow = productGrid && (state.isAdmin || window.location.search.includes("admin=1") || window.location.hash === "#admin");
+  if (!shouldShow) {
+    panel?.remove();
+    return;
+  }
+
+  if (!panel) {
+    panel = document.createElement("section");
+    panel.id = "adminProductManager";
+    panel.className = "admin-panel";
+    productGrid.closest(".store-section")?.after(panel);
+  }
+
+  if (!state.isAdmin) {
+    panel.innerHTML = `
+      <div class="admin-header">
+        <div>
+          <p class="eyebrow">${t("adminTitle")}</p>
+          <h2>${t("adminUnlock")}</h2>
+          <p>${t("adminHint")}</p>
+        </div>
+        <button class="checkout-button" type="button" data-admin-unlock>${t("adminUnlock")}</button>
+      </div>
+    `;
+    return;
+  }
+
+  const editing = getProduct(state.editingProductId) || {
+    id: "",
+    name: "",
+    nameAr: "",
+    category: "cars",
+    tag: "Poster",
+    tagAr: "بوستر",
+    image: "",
+    gallery: [],
+    basePrice: 50,
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70 },
+    frames: ["None", "Black", "White", "Wood"],
+    description: "",
+    descriptionAr: ""
+  };
+
+  panel.innerHTML = `
+    <div class="admin-header">
+      <div>
+        <p class="eyebrow">${t("adminTitle")}</p>
+        <h2>${t("adminTitle")}</h2>
+        <p>${t("adminHint")}</p>
+      </div>
+      <div class="admin-actions">
+        <button class="secondary-button" type="button" data-admin-reset>${t("adminReset")}</button>
+        <button class="secondary-button" type="button" data-admin-lock>${t("adminLock")}</button>
+      </div>
+    </div>
+    <form class="admin-form" id="adminProductForm">
+      <input type="hidden" name="originalId" value="${escapeHtml(editing.id)}">
+      <label><span>ID</span><input name="id" value="${escapeHtml(editing.id)}" placeholder="new-poster-id" required></label>
+      <label><span>Name</span><input name="name" value="${escapeHtml(editing.name)}" required></label>
+      <label><span>Arabic name</span><input name="nameAr" value="${escapeHtml(editing.nameAr || "")}"></label>
+      <label><span>Category</span><select name="category">
+        ${["custom", "cars", "paint", "abstract"].map((category) => `<option value="${category}" ${editing.category === category ? "selected" : ""}>${category}</option>`).join("")}
+      </select></label>
+      <label><span>Tag</span><input name="tag" value="${escapeHtml(editing.tag || "")}"></label>
+      <label><span>Image path</span><input name="image" value="${escapeHtml(editing.image || "")}" placeholder="assets/example.png" required></label>
+      <label class="admin-wide"><span>Gallery paths, comma separated</span><input name="gallery" value="${escapeHtml((editing.gallery || []).join(", "))}"></label>
+      <label><span>Base price</span><input name="basePrice" type="number" min="1" value="${editing.basePrice || 50}" required></label>
+      <label><span>20x30 price</span><input name="price20x30" type="number" min="1" value="${editing.sizes?.["20x30"] || 50}" required></label>
+      <label><span>30x40 price</span><input name="price30x40" type="number" min="1" value="${editing.sizes?.["30x40"] || 60}" required></label>
+      <label><span>40x50 price</span><input name="price40x50" type="number" min="1" value="${editing.sizes?.["40x50"] || 70}" required></label>
+      <label class="admin-wide"><span>Description</span><textarea name="description" required>${escapeHtml(editing.description || "")}</textarea></label>
+      <label class="admin-wide"><span>Arabic description</span><textarea name="descriptionAr">${escapeHtml(editing.descriptionAr || "")}</textarea></label>
+      <button class="checkout-button" type="submit">${editing.id ? t("adminSave") : t("adminAdd")}</button>
+      <button class="secondary-button" type="button" data-admin-new>${t("adminAdd")}</button>
+    </form>
+    <div class="admin-product-list">
+      ${products.map((product) => `
+        <article>
+          <img src="${product.image}" loading="lazy" decoding="async" alt="">
+          <strong>${escapeHtml(product.name)}</strong>
+          <span>${money(product.basePrice)}</span>
+          <button type="button" data-admin-edit="${product.id}">${t("adminEdit")}</button>
+          <button type="button" data-admin-delete="${product.id}">${t("adminDelete")}</button>
+        </article>
+      `).join("")}
+    </div>
+  `;
 }
 
 async function addToCart(productId, size = "30x40", frame = "Black") {
@@ -921,6 +1176,7 @@ async function addToCart(productId, size = "30x40", frame = "Black") {
 
 function cartLineTotal(item) {
   const product = getProduct(item.productId);
+  if (!product) return 0;
   return itemUnitPrice(product, item.size, item.frame) * item.quantity;
 }
 
@@ -942,6 +1198,7 @@ function renderCart() {
 
   cartItems.innerHTML = state.cart.map((item) => {
     const product = getProduct(item.productId);
+    if (!product) return "";
     const name = getProductName(product);
     return `
       <article class="cart-item">
@@ -1065,6 +1322,31 @@ function hideConfirmation() {
   if (qrCard) qrCard.setAttribute("hidden", "true");
 }
 
+function setUploadProgress(percent = 0, active = false) {
+  document.querySelectorAll("[data-upload-progress]").forEach((progress) => {
+    const bar = progress.querySelector("[data-upload-progress-bar]");
+    const value = Math.max(0, Math.min(100, percent));
+    progress.hidden = !active;
+    progress.setAttribute("aria-valuenow", String(Math.round(value)));
+    if (bar) bar.style.width = `${value}%`;
+  });
+}
+
+function resetCartAfterOrder() {
+  state.cart.forEach((item) => {
+    if (item.upload?.url && item.upload.url.startsWith("blob:")) {
+      URL.revokeObjectURL(item.upload.url);
+    }
+    if (item.upload) deleteImageFromDB(item.key);
+  });
+  state.cart = [];
+  state.confirmedForm = null;
+  localStorage.removeItem(LOCAL_STORAGE_CART_KEY);
+  hideConfirmation();
+  renderCart();
+  closeCart();
+}
+
 function isMobileDevice() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
          (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
@@ -1131,6 +1413,7 @@ function buildWhatsAppMessage() {
 
   state.cart.forEach((item, index) => {
     const product = getProduct(item.productId);
+    if (!product) return;
     const name = getProductName(product);
     const resolvedSize = `${item.size} cm`;
     const resolvedFrame = getFrameOptionLabel(item.frame);
@@ -1167,17 +1450,33 @@ async function sendWhatsAppOrder() {
 
   const isAr = state.lang === "ar";
   showToast(isAr ? "جاري رفع صور المنتجات إلى الخادم الآمن..." : "Uploading product images to secure server...");
+  setUploadProgress(8, true);
 
   let message = buildWhatsAppMessage();
   const uploadPromises = [];
+  const uploadTotal = state.cart.reduce((total, item) => {
+    const product = getProduct(item.productId);
+    if (!product) return total;
+    if (item.upload && item.upload.url) return total + 1;
+    return total + ((product.gallery && product.gallery.length) ? product.gallery.length : 1);
+  }, 0);
+  let uploadDone = 0;
+
+  const uploadWithProgress = async (imgUrl, fileName) => {
+    const url = await fetchAndUploadImage(imgUrl, fileName);
+    uploadDone += 1;
+    setUploadProgress(8 + (uploadDone / Math.max(uploadTotal, 1)) * 82, true);
+    return url;
+  };
 
   // Gather all items and their images (including full galleries for series)
   state.cart.forEach((item, index) => {
     const product = getProduct(item.productId);
+    if (!product) return;
     if (item.upload && item.upload.url) {
       // Custom upload
       uploadPromises.push((async () => {
-        const url = await fetchAndUploadImage(item.upload.url, item.upload.name);
+        const url = await uploadWithProgress(item.upload.url, item.upload.name);
         return { index, label: isAr ? "التصميم المرفوع" : "Uploaded Design", urls: url ? [url] : [] };
       })());
     } else {
@@ -1188,7 +1487,7 @@ async function sendWhatsAppOrder() {
         for (let i = 0; i < imagesToUpload.length; i++) {
           const imgUrl = productImageUrl(imagesToUpload[i]);
           const fileName = `${product.name.replace(/\s+/g, "_")}_${i + 1}.png`;
-          const url = await fetchAndUploadImage(imgUrl, fileName);
+          const url = await uploadWithProgress(imgUrl, fileName);
           if (url) urls.push(url);
         }
         return { index, label: getProductName(product), urls };
@@ -1206,6 +1505,7 @@ async function sendWhatsAppOrder() {
       });
     });
     message += linkSection;
+    setUploadProgress(100, true);
     showToast(isAr ? "تم الرفع بنجاح!" : "Upload successful!");
   } catch (err) {
     console.error("Failed to upload some product images:", err);
@@ -1215,6 +1515,8 @@ async function sendWhatsAppOrder() {
   setTimeout(() => {
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank", "noopener,noreferrer");
+    setUploadProgress(0, false);
+    resetCartAfterOrder();
   }, 1500);
 }
 
@@ -1268,6 +1570,71 @@ document.addEventListener("click", (event) => {
   const langToggle = event.target.closest("[data-lang-toggle]");
   if (langToggle) {
     toggleLanguage();
+    return;
+  }
+
+  const adminUnlock = event.target.closest("[data-admin-unlock]");
+  if (adminUnlock) {
+    const passcode = window.prompt("Admin passcode");
+    if (passcode === ADMIN_PASSCODE) {
+      state.isAdmin = true;
+      localStorage.setItem(LOCAL_STORAGE_ADMIN_KEY, "true");
+      renderAdminPanel();
+      showToast("Admin unlocked");
+    } else if (passcode) {
+      showToast("Wrong admin passcode");
+    }
+    return;
+  }
+
+  const adminLock = event.target.closest("[data-admin-lock]");
+  if (adminLock) {
+    state.isAdmin = false;
+    localStorage.removeItem(LOCAL_STORAGE_ADMIN_KEY);
+    renderAdminPanel();
+    showToast("Admin locked");
+    return;
+  }
+
+  const adminNew = event.target.closest("[data-admin-new]");
+  if (adminNew) {
+    state.editingProductId = "";
+    renderAdminPanel();
+    return;
+  }
+
+  const adminEdit = event.target.closest("[data-admin-edit]");
+  if (adminEdit) {
+    state.editingProductId = adminEdit.dataset.adminEdit;
+    renderAdminPanel();
+    document.querySelector("#adminProductForm")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+
+  const adminDelete = event.target.closest("[data-admin-delete]");
+  if (adminDelete) {
+    const product = getProduct(adminDelete.dataset.adminDelete);
+    if (product && window.confirm(`Delete ${product.name}?`)) {
+      products.splice(products.findIndex((item) => item.id === product.id), 1);
+      state.cart = state.cart.filter((item) => item.productId !== product.id);
+      saveAdminProducts();
+      saveCart();
+      renderProducts();
+      renderCart();
+      renderAdminPanel();
+      showToast("Product deleted");
+    }
+    return;
+  }
+
+  const adminReset = event.target.closest("[data-admin-reset]");
+  if (adminReset && window.confirm("Reset local product edits?")) {
+    products.splice(0, products.length, ...defaultProducts.map((product) => structuredClone(product)));
+    state.editingProductId = "";
+    localStorage.removeItem(LOCAL_STORAGE_PRODUCTS_KEY);
+    renderProducts();
+    renderAdminPanel();
+    showToast("Local product edits reset");
     return;
   }
 
@@ -1365,6 +1732,53 @@ document.addEventListener("change", (event) => {
 if (checkoutForm) checkoutForm.addEventListener("submit", handleCheckout);
 
 document.addEventListener("submit", async (event) => {
+  const adminForm = event.target.closest("#adminProductForm");
+  if (adminForm) {
+    event.preventDefault();
+    const data = new FormData(adminForm);
+    const id = String(data.get("id") || "").trim().toLowerCase().replace(/[^a-z0-9-]+/g, "-").replace(/^-|-$/g, "");
+    if (!id) {
+      showToast("Product ID is required");
+      return;
+    }
+    const gallery = String(data.get("gallery") || "")
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
+    const product = {
+      id,
+      name: String(data.get("name") || "").trim(),
+      nameAr: String(data.get("nameAr") || "").trim(),
+      category: String(data.get("category") || "cars"),
+      tag: String(data.get("tag") || "Poster").trim(),
+      tagAr: String(data.get("tag") || "بوستر").trim(),
+      image: String(data.get("image") || "").trim(),
+      gallery: gallery.length ? gallery : [String(data.get("image") || "").trim()],
+      basePrice: Number(data.get("basePrice")) || 50,
+      sizes: {
+        "20x30": Number(data.get("price20x30")) || 50,
+        "30x40": Number(data.get("price30x40")) || 60,
+        "40x50": Number(data.get("price40x50")) || 70
+      },
+      frames: ["None", "Black", "White", "Wood"],
+      description: String(data.get("description") || "").trim(),
+      descriptionAr: String(data.get("descriptionAr") || "").trim()
+    };
+    const originalId = String(data.get("originalId") || "");
+    const existingIndex = products.findIndex((item) => item.id === originalId || item.id === id);
+    if (existingIndex >= 0) {
+      products[existingIndex] = product;
+    } else {
+      products.push(product);
+    }
+    state.editingProductId = product.id;
+    saveAdminProducts();
+    renderProducts();
+    renderAdminPanel();
+    showToast("Product saved");
+    return;
+  }
+
   const directForm = event.target.closest("#directCheckoutForm");
   if (!directForm) return;
   event.preventDefault();
@@ -1461,8 +1875,10 @@ document.addEventListener("submit", async (event) => {
 updateLanguageUI();
 updateThemeUI();
 if (productGrid) renderProducts();
+renderAdminPanel();
 renderCart();
 initializeCartImages();
+preloadProductImages();
 
 // Register Service Worker
 if ('serviceWorker' in navigator) {

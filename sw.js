@@ -1,4 +1,5 @@
-const CACHE_NAME = 'poster-lab-store-v7';
+const CACHE_NAME = 'poster-lab-store-v8';
+const IMAGE_CACHE_NAME = 'poster-lab-images-v1';
 const ASSETS = [
   './',
   './index.html',
@@ -6,7 +7,24 @@ const ASSETS = [
   './styles.css',
   './script.js',
   './assets/poster-lab-logo.png',
-  './assets/instapay-qr.jpeg'
+  './assets/instapay-qr.jpeg',
+  './assets/custom-upload.jpg',
+  './assets/Porsche GT3 RS.png',
+  './assets/Red Ferrari.png',
+  './assets/Dark Blue RedBull.png',
+  './assets/Space Astronauts.png',
+  './assets/Minecraft Avengers.png',
+  './assets/Monaliza.png',
+  './assets/Spiderman.png',
+  './assets/Blue Porsche 3/upscalemedia-transformed blue porsche 3_01.png',
+  './assets/Blue Porsche 3/upscalemedia-transformed blue porsche 3_02.png',
+  './assets/Blue Porsche 3/upscalemedia-transformed blue porsche 3_03.png',
+  './assets/Red Ferrari 3/upscalemedia-transformed ferrari 3 (1).png',
+  './assets/Red Ferrari 3/upscalemedia-transformed ferrari 3 (2).png',
+  './assets/Red Ferrari 3/upscalemedia-transformed ferrari 3 (3).png',
+  './assets/Yellow Porsche 3/upscalemedia-transformed yellow 3_01.png',
+  './assets/Yellow Porsche 3/upscalemedia-transformed yellow 3_02.png',
+  './assets/Yellow Porsche 3/upscalemedia-transformed yellow 3_03.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -23,7 +41,7 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((keys) => {
       return Promise.all(
         keys.map((key) => {
-          if (key !== CACHE_NAME) {
+          if (![CACHE_NAME, IMAGE_CACHE_NAME].includes(key)) {
             return caches.delete(key);
           }
         })
@@ -34,6 +52,25 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  const requestUrl = new URL(event.request.url);
+  const isLocalImage = requestUrl.origin === self.location.origin && requestUrl.pathname.includes('/assets/');
+
+  if (isLocalImage) {
+    event.respondWith(
+      caches.open(IMAGE_CACHE_NAME).then((cache) => {
+        return cache.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) return cachedResponse;
+          return fetch(event.request).then((networkResponse) => {
+            if (networkResponse && networkResponse.status === 200) {
+              cache.put(event.request, networkResponse.clone());
+            }
+            return networkResponse;
+          });
+        });
+      })
+    );
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
