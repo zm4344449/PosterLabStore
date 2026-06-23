@@ -1,4 +1,4 @@
-const CACHE_NAME = 'poster-lab-store-v8';
+const CACHE_NAME = 'poster-lab-store-v10';
 const IMAGE_CACHE_NAME = 'poster-lab-images-v1';
 const ASSETS = [
   './',
@@ -8,6 +8,7 @@ const ASSETS = [
   './script.js',
   './assets/poster-lab-logo.png',
   './assets/instapay-qr.jpeg',
+  './assets/size-guide.png',
   './assets/custom-upload.jpg',
   './assets/Porsche GT3 RS.png',
   './assets/Red Ferrari.png',

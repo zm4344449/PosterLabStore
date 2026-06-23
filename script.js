@@ -1,4 +1,5 @@
 const WHATSAPP_NUMBER = "201010414187";
+const DELIVERY_FEE = 35;
 const frameOptions = {
   None: { label: "Poster only", price: 0, hint: "Poster only, no frame" },
   Black: { label: "Black frame", price: 120 },
@@ -56,7 +57,7 @@ const translations = {
     noProductsFound: "No framed posters found.",
     tryDifferentSearch: "Try a different search or filter.",
     from: "From",
-    sizesAvailable: "3 sizes available",
+    sizesAvailable: "4 sizes available",
     customize: "View details",
     orderNow: "Add to cart",
     uploadDesignBtn: "Upload design",
@@ -105,6 +106,11 @@ const translations = {
     addedToCart: "Added to cart",
     confUploadSummaryTitle: "Uploaded designs:",
     uploadProgressLabel: "Uploading poster to server",
+    deliveryFeeLabel: "Delivery",
+    subtotalLabel: "Subtotal",
+    sizeGuideTitle: "Size guide",
+    sizeGuideHint: "Choose the size that fits your wall.",
+    addToCartSimple: "Add to cart",
   },
   ar: {
     brandTitle: "بوستر لاب ستور",
@@ -155,7 +161,7 @@ const translations = {
     noProductsFound: "لم يتم العثور على بوسترات.",
     tryDifferentSearch: "جرّب البحث بكلمات أخرى أو تغيير الفلاتر.",
     from: "تبدأ من",
-    sizesAvailable: "٣ مقاسات متاحة",
+    sizesAvailable: "٤ مقاسات متاحة",
     customize: "عرض التفاصيل",
     orderNow: "أضف للسلة",
     uploadDesignBtn: "رفع التصميم",
@@ -204,6 +210,11 @@ const translations = {
     addedToCart: "تمت الإضافة إلى السلة",
     confUploadSummaryTitle: "التصاميم المرفوعة:",
     uploadProgressLabel: "جاري رفع البوستر إلى السيرفر",
+    deliveryFeeLabel: "التوصيل",
+    subtotalLabel: "المجموع الفرعي",
+    sizeGuideTitle: "دليل المقاسات",
+    sizeGuideHint: "اختار المقاس المناسب للحائط عندك.",
+    addToCartSimple: "أضف للسلة",
   }
 };
 
@@ -216,7 +227,7 @@ const currency = new Intl.NumberFormat("en-EG", {
 const products = [
   {
     id: "custom-upload",
-    name: "Upload Your Customized Design",
+    name: "Upload Your Design",
     nameAr: "رفع تصميمك الخاص",
     category: "custom",
     tag: "Custom upload",
@@ -224,7 +235,7 @@ const products = [
     image: "assets/custom-upload.jpg",
     gallery: ["assets/custom-upload.jpg"],
     basePrice: 60,
-    sizes: { "20x30": 60, "30x40": 80, "40x50": 90 },
+    sizes: { "20x30": 60, "30x40": 80, "40x50": 90, "50x70": 120 },
     frames: ["None", "Black", "White", "Wood"],
     isCustom: true,
     description: "Upload your own photo, artwork, logo, or poster design. Choose poster size and optional frame before sending the final order.",
@@ -240,7 +251,7 @@ const products = [
     image: "assets/Porsche GT3 RS.png",
     gallery: ["assets/Porsche GT3 RS.png"],
     basePrice: 50,
-    sizes: { "20x30": 50, "30x40": 60, "40x50": 70 },
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
     frames: ["None", "Black", "White", "Wood"],
     description: "A premium Porsche poster with bold racing style and crisp detail for modern interiors.",
     descriptionAr: "بوستر بورشه فاخر بتصميم سباق جريء وتفاصيل واضحة للمساحات العصرية."
@@ -255,7 +266,7 @@ const products = [
     image: "assets/Red Ferrari.png",
     gallery: ["assets/Red Ferrari.png"],
     basePrice: 50,
-    sizes: { "20x30": 50, "30x40": 60, "40x50": 70 },
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
     frames: ["None", "Black", "White", "Wood"],
     description: "A dynamic Ferrari poster with striking contrast and a performance-inspired look.",
     descriptionAr: "بوستر فيراري ديناميكي بتباين قوي ومظهر مستوحى من الأداء."
@@ -270,7 +281,7 @@ const products = [
     image: "assets/Dark Blue RedBull.png",
     gallery: ["assets/Dark Blue RedBull.png"],
     basePrice: 50,
-    sizes: { "20x30": 50, "30x40": 60, "40x50": 70 },
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
     frames: ["None", "Black", "White", "Wood"],
     description: "A striking Red Bull racing poster with vivid colors and sharp energy.",
     descriptionAr: "بوستر ريد بول السباقي بألوان زاهية وطاقة حادة."
@@ -285,7 +296,7 @@ const products = [
     image: "assets/Space Astronauts.png",
     gallery: ["assets/Space Astronauts.png"],
     basePrice: 50,
-    sizes: { "20x30": 50, "30x40": 60, "40x50": 70 },
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
     frames: ["None", "Black", "White", "Wood"],
     description: "A futuristic astronaut poster with vibrant planets and cosmic energy.",
     descriptionAr: "بوستر رواد فضاء مستقبلي بألوان كوكبية زاهية وطاقة كونية."
@@ -300,7 +311,7 @@ const products = [
     image: "assets/Minecraft Avengers.png",
     gallery: ["assets/Minecraft Avengers.png"],
     basePrice: 50,
-    sizes: { "20x30": 50, "30x40": 60, "40x50": 70 },
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
     frames: ["None", "Black", "White", "Wood"],
     description: "A bold Minecraft Avengers poster that mixes gaming and pop culture for colorful spaces.",
     descriptionAr: "بوستر Minecraft Avengers جريء يمزج بين الألعاب والثقافة الشعبية لمساحات ملونة."
@@ -315,7 +326,7 @@ const products = [
     image: "assets/Monaliza.png",
     gallery: ["assets/Monaliza.png"],
     basePrice: 50,
-    sizes: { "20x30": 50, "30x40": 60, "40x50": 70 },
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
     frames: ["None", "Black", "White", "Wood"],
     description: "A stylish Monaliza poster with classic art inspiration and modern edge.",
     descriptionAr: "بوستر Monaliza أنيق مستوحى من الفن الكلاسيكي مع لمسة عصرية."
@@ -330,7 +341,7 @@ const products = [
     image: "assets/Spiderman.png",
     gallery: ["assets/Spiderman.png"],
     basePrice: 50,
-    sizes: { "20x30": 50, "30x40": 60, "40x50": 70 },
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
     frames: ["None", "Black", "White", "Wood"],
     description: "A dynamic Spiderman poster with crisp comic-style visuals for fan spaces.",
     descriptionAr: "بوستر سبايدرمان ديناميكي بصور أسلوب الكوميك الواضحة لمساحات المعجبين."
@@ -349,7 +360,7 @@ const products = [
       "assets/Blue Porsche 3/upscalemedia-transformed blue porsche 3_03.png"
     ],
     basePrice: 50,
-    sizes: { "20x30": 50, "30x40": 60, "40x50": 70 },
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
     frames: ["None", "Black", "White", "Wood"],
     description: "A three-image Blue Porsche poster set that shows the car in three bold compositions.",
     descriptionAr: "مجموعة بثلاث صور لبورشه زرقاء تعرض السيارة في ثلاث تركيبات جريئة."
@@ -368,7 +379,7 @@ const products = [
       "assets/Red Ferrari 3/upscalemedia-transformed ferrari 3 (3).png"
     ],
     basePrice: 50,
-    sizes: { "20x30": 50, "30x40": 60, "40x50": 70 },
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
     frames: ["None", "Black", "White", "Wood"],
     description: "A three-image Ferrari poster set with dramatic red speed styling.",
     descriptionAr: "مجموعة بثلاث صور لبوستر فيراري بتصميم أحمر درامي وسرعة مميزة."
@@ -387,7 +398,7 @@ const products = [
       "assets/Yellow Porsche 3/upscalemedia-transformed yellow 3_03.png"
     ],
     basePrice: 50,
-    sizes: { "20x30": 50, "30x40": 60, "40x50": 70 },
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
     frames: ["None", "Black", "White", "Wood"],
     description: "A three-image Yellow Porsche poster set with bright racing energy.",
     descriptionAr: "مجموعة بثلاث صور لبوستر بورشه صفراء بطاقة سباقية مشرقة."
@@ -591,6 +602,50 @@ function itemUnitPrice(product, size, frame) {
   return product.sizes[size] + frameOptions[frame].price;
 }
 
+function cartSubtotal() {
+  return state.cart.reduce((sum, item) => sum + cartLineTotal(item), 0);
+}
+
+function orderDeliveryFee() {
+  return state.cart.length ? DELIVERY_FEE : 0;
+}
+
+function sizeGuideMarkup() {
+  return `
+    <button class="size-guide-button" type="button" data-size-guide-toggle>
+      <span aria-hidden="true">▦</span>
+      ${t("sizeGuideTitle")}
+    </button>
+  `;
+}
+
+function openSizeGuide() {
+  let modal = document.querySelector("[data-size-guide-modal]");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.className = "size-guide-modal";
+    modal.dataset.sizeGuideModal = "true";
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+    modal.setAttribute("aria-label", t("sizeGuideTitle"));
+    modal.innerHTML = `
+      <div class="size-guide-preview">
+        <button class="icon-button size-guide-close" type="button" data-size-guide-close aria-label="Close size guide">x</button>
+        <img src="assets/size-guide.png" alt="${t("sizeGuideTitle")}">
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+  modal.hidden = false;
+  document.body.classList.add("modal-open");
+}
+
+function closeSizeGuide() {
+  const modal = document.querySelector("[data-size-guide-modal]");
+  if (modal) modal.hidden = true;
+  document.body.classList.remove("modal-open");
+}
+
 function getPageProductId() {
   const params = new URLSearchParams(window.location.search);
   return params.get("id");
@@ -758,7 +813,7 @@ function renderProducts() {
           ${galleryBadge(product) ? `<span class="product-gallery-badge">${galleryBadge(product)}</span>` : ""}
         </a>
         <div class="product-info">
-          <h3>${name}</h3>
+          <h2>${name}</h2>
           <p class="product-summary">${desc}</p>
           <div class="product-meta">
             <span>${t("from")} ${money(product.basePrice)}</span>
@@ -798,34 +853,28 @@ function renderDetail(productId) {
     productDetail.hidden = false;
     const previewImage = product.isCustom && state.customUpload ? state.customUpload.url : product.image;
     productDetail.innerHTML = `
-      <article class="detail">
+      <article class="detail product-detail-layout">
       <div class="detail-gallery">
         <div class="detail-main-image frame-${state.detailFrame.toLowerCase()}">
           <img id="detailMainImage" src="${previewImage}" loading="eager" decoding="async" fetchpriority="high" alt="${name} ${currentLang === "ar" ? "معرض البوستر" : "framed poster gallery image"}">
         </div>
-        <div class="thumb-row">
-          ${product.gallery.map((image) => `
-            <button type="button" class="${image === previewImage ? "is-active" : ""}" data-gallery-image="${image}" aria-label="Show gallery image">
-              <img src="${image}" loading="lazy" decoding="async" alt="${name} thumbnail">
-            </button>
-          `).join("")}
-        </div>
       </div>
-      <div class="detail-copy">
+      <div class="detail-copy product-order-panel">
         <a class="back-link" href="index.html">${t("backToShop")}</a>
-        <p class="eyebrow">${tag} / ${t("detailEyebrow")}</p>
-        <h2>${name}</h2>
-        <p>${desc}</p>
+        <p class="eyebrow">${tag}</p>
+        <h1 class="${product.isCustom ? "custom-product-title" : ""}">${name}</h1>
         <div class="price-line">
           <span>${money(itemUnitPrice(product, state.detailSize, state.detailFrame))}</span>
           <small>${state.detailSize} ${currentLang === "ar" ? "سم مع" : "cm with"} ${getFrameOptionLabel(state.detailFrame)}</small>
         </div>
+        <p class="detail-short-desc">${desc}</p>
+        ${sizeGuideMarkup()}
         <div class="variant-row">
           <span class="eyebrow">${t("detailPosterSize")}</span>
-          <div class="variant-options">
+          <div class="variant-options size-options">
             ${Object.entries(product.sizes).map(([size, price]) => `
               <button type="button" class="${size === state.detailSize ? "is-selected" : ""}" data-size="${size}">
-                ${size} ${currentLang === "ar" ? "سم" : "cm"} - ${money(price)}
+                ${size}
               </button>
             `).join("")}
           </div>
@@ -836,7 +885,7 @@ function renderDetail(productId) {
             ${product.frames.map((frame) => `
               <button type="button" class="${frame === state.detailFrame ? "is-selected" : ""}" data-frame="${frame}">
                 <span class="dot ${frame.toLowerCase()}"></span>
-                <span>${getFrameOptionLabel(frame)} + ${money(frameOptions[frame].price)}${frameOptions[frame].hint ? `<small class="choice-hint">${getFrameOptionHint(frame)}</small>` : ""}</span>
+                <span>${getFrameOptionLabel(frame)}</span>
               </button>
             `).join("")}
           </div>
@@ -844,7 +893,7 @@ function renderDetail(productId) {
         ${product.isCustom ? `
           <div class="upload-section">
             <label class="upload-box ${state.customUpload ? "has-file" : ""}">
-              ${state.customUpload && state.customUpload.url ? `
+              ${state.customUpload && state.customUpload.url && !state.customUpload.previewError ? `
                 <img class="upload-preview-thumb" src="${state.customUpload.url}" alt="Preview">
               ` : ""}
               <div class="upload-box-content">
@@ -857,30 +906,9 @@ function renderDetail(productId) {
               <button class="remove-upload-btn" type="button" data-remove-upload>${state.lang === "ar" ? "إزالة التصميم" : "Remove design"}</button>
             ` : ""}
           </div>
-          
-          <form class="direct-checkout-form" id="directCheckoutForm" style="margin-top: 24px; padding: 20px; background: rgba(30, 41, 59, 0.4); border-radius: 16px; border: 1px solid var(--line);">
-            <h3 style="margin-top: 0; color: var(--accent); font-size: 1.3rem;">${currentLang === "ar" ? "أرسل التصميم على واتساب" : "Send your design on WhatsApp"}</h3>
-            
-            <label style="display: grid; gap: 8px; margin-bottom: 12px;">
-              <span style="font-weight: 800; font-size: 0.95rem;">${t("cartNameLabel")}</span>
-              <input id="directName" name="customerName" placeholder="${t("cartNamePlaceholder")}" required style="width:100%; min-height:48px; padding:12px; border-radius:8px; background: rgba(15,23,42,0.8); color:#fff; border:1px solid rgba(255,255,255,0.15);">
-            </label>
-            
-            <label style="display: grid; gap: 8px; margin-bottom: 16px;">
-              <span style="font-weight: 800; font-size: 0.95rem;">${t("cartPhoneLabel")}</span>
-              <input id="directPhone" name="customerPhone" placeholder="${t("cartPhonePlaceholder")}" required style="width:100%; min-height:48px; padding:12px; border-radius:8px; background: rgba(15,23,42,0.8); color:#fff; border:1px solid rgba(255,255,255,0.15);">
-            </label>
-
-            <div style="margin-bottom: 16px; font-weight: 800; font-size: 1.1rem; color: #fff;">
-              ${t("cartTotalLabel")} ${money(itemUnitPrice(product, state.detailSize, state.detailFrame))}
-            </div>
-
-            <button class="checkout-button" type="submit" id="directSendBtn" style="width: 100%; min-height: 56px; font-weight: 800; font-size: 1.2rem; cursor: pointer;">
-              ${currentLang === "ar" ? "إرسال على واتساب" : "Send on WhatsApp"}
-            </button>
-          </form>
+          <p class="custom-upload-note">${currentLang === "ar" ? "ارفع التصميم، ثم أضف البوستر إلى السلة." : "Upload your design, then add the poster to the cart."}</p>
         ` : `
-          <button class="detail-add" type="button" data-detail-add>${t("detailAddPosterBtn")}</button>
+          <button class="detail-add" type="button" data-detail-add>${t("addToCartSimple")}</button>
         `}
       </div>
     </article>
@@ -907,7 +935,8 @@ async function addToCart(productId, size = "30x40", frame = "Black") {
     size: state.customUpload.size,
     type: state.customUpload.type,
     url: state.customUpload.url,
-    dataUrl: state.customUpload.dataUrl
+    dataUrl: state.customUpload.dataUrl,
+    file: state.customUploadFile || null
   } : null;
   const key = product.isCustom
     ? `${product.id}-${resolvedSize}-${resolvedFrame}-${Date.now()}`
@@ -947,7 +976,7 @@ function cartLineTotal(item) {
 }
 
 function cartGrandTotal() {
-  return state.cart.reduce((sum, item) => sum + cartLineTotal(item), 0);
+  return cartSubtotal() + orderDeliveryFee();
 }
 
 function renderCart() {
@@ -982,7 +1011,12 @@ function renderCart() {
         </div>
       </article>
     `;
-  }).join("");
+  }).join("") + `
+    <div class="cart-fee-summary">
+      <span>${t("subtotalLabel")}</span><strong>${money(cartSubtotal())}</strong>
+      <span>${t("deliveryFeeLabel")}</span><strong>${money(orderDeliveryFee())}</strong>
+    </div>
+  `;
 }
 
 function openCart() {
@@ -1036,6 +1070,8 @@ function renderConfirmation() {
 
   confirmationSummary.innerHTML = `
     <strong>${orderTotalLabel} ${money(cartGrandTotal())}</strong>
+    <span>${t("subtotalLabel")}: ${money(cartSubtotal())}</span>
+    <span>${t("deliveryFeeLabel")}: ${money(orderDeliveryFee())}</span>
     <span>${details.customerName} / ${details.customerPhone}</span>
     <span>${details.paymentMethod}</span>
     <span>${itemsCountText}</span>
@@ -1114,8 +1150,8 @@ function resetCartAfterOrder() {
 }
 
 function isMobileDevice() {
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-         (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+    (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
 }
 
 async function uploadImageToTemporaryServer(blob, fileName) {
@@ -1150,6 +1186,17 @@ async function fetchAndUploadImage(imgUrl, fileName) {
   }
 }
 
+async function getUploadBlobForItem(item) {
+  if (item.upload?.file) return item.upload.file;
+  const storedBlob = await getImageFromDB(item.key);
+  if (storedBlob) return storedBlob;
+  if (item.upload?.url) {
+    const response = await fetch(item.upload.url);
+    return await response.blob();
+  }
+  return null;
+}
+
 function buildWhatsAppMessage() {
   const details = state.confirmedForm || readCheckoutForm();
   const currentLang = state.lang || "en";
@@ -1161,6 +1208,8 @@ function buildWhatsAppMessage() {
     phone: isAr ? "رقم الهاتف" : "Phone",
     address: isAr ? "العنوان" : "Address",
     payment: isAr ? "طريقة الدفع" : "Payment Method",
+    subtotal: isAr ? "المجموع الفرعي" : "Subtotal",
+    delivery: isAr ? "التوصيل" : "Delivery",
     product: isAr ? "المنتج" : "Product",
     customization: isAr ? "التخصيص" : "Customization",
     link: isAr ? "رابط المنتج" : "Product Link",
@@ -1193,6 +1242,8 @@ function buildWhatsAppMessage() {
 
   lines.push(
     `----------------------------------`,
+    `*${tMsg.subtotal}:* ${money(cartSubtotal())}`,
+    `*${tMsg.delivery}:* ${money(orderDeliveryFee())}`,
     `*${tMsg.totalPrice}:* ${money(cartGrandTotal())}`
   );
 
@@ -1223,7 +1274,7 @@ async function sendWhatsAppOrder() {
   const uploadTotal = state.cart.reduce((total, item) => {
     const product = getProduct(item.productId);
     if (!product) return total;
-    if (item.upload && item.upload.url) return total + 1;
+    if (item.upload) return total + 1;
     return total + ((product.gallery && product.gallery.length) ? product.gallery.length : 1);
   }, 0);
   let uploadDone = 0;
@@ -1239,10 +1290,13 @@ async function sendWhatsAppOrder() {
   state.cart.forEach((item, index) => {
     const product = getProduct(item.productId);
     if (!product) return;
-    if (item.upload && item.upload.url) {
+    if (item.upload) {
       // Custom upload
       uploadPromises.push((async () => {
-        const url = await uploadWithProgress(item.upload.url, item.upload.name);
+        const blob = await getUploadBlobForItem(item);
+        const url = blob ? await uploadImageToTemporaryServer(blob, item.upload.name) : null;
+        uploadDone += 1;
+        setUploadProgress(8 + (uploadDone / Math.max(uploadTotal, 1)) * 82, true);
         return { index, label: isAr ? "التصميم المرفوع" : "Uploaded Design", urls: url ? [url] : [] };
       })());
     } else {
@@ -1339,6 +1393,18 @@ document.addEventListener("click", (event) => {
     return;
   }
 
+  const sizeGuideToggle = event.target.closest("[data-size-guide-toggle]");
+  if (sizeGuideToggle) {
+    openSizeGuide();
+    return;
+  }
+
+  const sizeGuideClose = event.target.closest("[data-size-guide-close]");
+  if (sizeGuideClose || event.target.matches("[data-size-guide-modal]")) {
+    closeSizeGuide();
+    return;
+  }
+
   const removeUpload = event.target.closest("[data-remove-upload]");
   if (removeUpload) {
     if (state.customUpload?.url && state.customUpload.isObjectUrl) {
@@ -1407,6 +1473,10 @@ document.addEventListener("click", (event) => {
   if (sendWhatsApp) sendWhatsAppOrder();
 });
 
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeSizeGuide();
+});
+
 document.addEventListener("change", (event) => {
   const uploadInput = event.target.closest("[data-upload-design]");
   if (!uploadInput) return;
@@ -1423,107 +1493,24 @@ document.addEventListener("change", (event) => {
     size: file.size,
     type: file.type || "image",
     url: objectUrl,
-    isObjectUrl: true
+    isObjectUrl: true,
+    previewError: false
   };
   state.customUploadFile = file; // Store raw file object
   saveCustomUpload(state.customUpload);
   renderDetail(state.selectedProduct);
+
+  const previewProbe = new Image();
+  previewProbe.onerror = () => {
+    if (state.customUpload?.url === objectUrl) {
+      state.customUpload.previewError = true;
+      renderDetail(state.selectedProduct);
+    }
+  };
+  previewProbe.src = objectUrl;
 });
 
 if (checkoutForm) checkoutForm.addEventListener("submit", handleCheckout);
-
-document.addEventListener("submit", async (event) => {
-  const directForm = event.target.closest("#directCheckoutForm");
-  if (!directForm) return;
-  event.preventDefault();
-
-  if (!state.customUpload || !state.customUploadFile) {
-    showToast(t("pleaseUploadAlert"));
-    return;
-  }
-
-  const product = getProduct(state.selectedProduct);
-  const name = getProductName(product);
-  const size = state.detailSize;
-  const frame = state.detailFrame;
-  const price = itemUnitPrice(product, size, frame);
-
-  const customerName = directForm.elements.customerName.value.trim();
-  const customerPhone = directForm.elements.customerPhone.value.trim();
-
-  const currentLang = state.lang || "en";
-  const isAr = currentLang === "ar";
-
-  const tMsg = {
-    title: isAr ? "استفسار وطلب تصميم خاص - بوستر لاب" : "Custom Design Inquiry - Poster Lab Store",
-    customer: isAr ? "اسم العميل" : "Customer Name",
-    phone: isAr ? "رقم الهاتف" : "Phone",
-    product: isAr ? "المنتج" : "Product",
-    customization: isAr ? "التخصيص" : "Customization",
-    imageAttached: isAr ? "اسم ملف التصميم" : "Design file",
-    note: isAr ? "سنراجع التصميم ونؤكد التفاصيل على واتساب." : "We will review the design and confirm details on WhatsApp.",
-    totalPrice: isAr ? "السعر المقدر" : "Estimated Price"
-  };
-
-  const lines = [
-    `*${tMsg.title}*`,
-    `----------------------------------`,
-    `*${tMsg.customer}:* ${customerName}`,
-    `*${tMsg.phone}:* ${customerPhone}`,
-    `----------------------------------`,
-    `*${tMsg.product}:* ${name}`,
-    `*${tMsg.customization}:* ${size} cm | ${getFrameOptionLabel(frame)}`,
-    `*${tMsg.imageAttached}:* ${state.customUpload.name}`,
-    `----------------------------------`,
-    `*${tMsg.note}*`,
-    `----------------------------------`,
-    `*${tMsg.totalPrice}:* ${money(price)}`
-  ];
-
-  let message = lines.filter(line => line !== "").join("\n");
-
-  const imgUrl = state.customUpload.url;
-  const fileName = state.customUpload.name;
-
-  showToast(isAr ? "جاري رفع الصورة إلى الخادم الآمن..." : "Uploading image to secure server...");
-  try {
-    const response = await fetch(imgUrl);
-    const blob = await response.blob();
-    const uploadedUrl = await uploadImageToTemporaryServer(blob, fileName);
-    if (uploadedUrl) {
-      const linkLine = isAr 
-        ? `\n*رابط تنزيل الصورة المرفوعة:* ${uploadedUrl}` 
-        : `\n*Direct Image Download Link:* ${uploadedUrl}`;
-      message += linkLine;
-      showToast(isAr ? "تم الرفع بنجاح!" : "Upload successful!");
-    } else {
-      throw new Error("Upload returned null");
-    }
-  } catch (err) {
-    console.error("Temporary upload failed, falling back to download:", err);
-    // Trigger download
-    try {
-      const response = await fetch(imgUrl);
-      const blob = await response.blob();
-      const downloadUrl = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = downloadUrl;
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(downloadUrl), 5000);
-    } catch (downloadErr) {
-      console.error("Fallback download failed:", downloadErr);
-    }
-    await copyImageToClipboard(imgUrl);
-  }
-
-  setTimeout(() => {
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank", "noopener,noreferrer");
-  }, 1500);
-});
 
 // Run initial configurations
 updateLanguageUI();

@@ -759,11 +759,11 @@ textarea:focus {
 
 .detail {
   display: grid;
-  gap: 24px;
+  gap: 22px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
-  padding: clamp(16px, 3vw, 28px);
+  padding: clamp(12px, 2vw, 20px);
   box-shadow: var(--shadow);
 }
 
@@ -774,7 +774,7 @@ textarea:focus {
 
 .detail-main-image {
   display: grid;
-  min-height: 420px;
+  min-height: clamp(360px, 62vh, 720px);
   place-items: center;
   border-radius: var(--radius);
   background:
@@ -784,7 +784,7 @@ textarea:focus {
 }
 
 .detail-main-image img {
-  width: min(74%, 430px);
+  width: min(78%, 520px);
   aspect-ratio: 4 / 5;
   object-fit: cover;
   background: var(--poster-mat);
@@ -838,7 +838,7 @@ textarea:focus {
 .detail-copy {
   display: grid;
   align-content: start;
-  gap: 16px;
+  gap: 13px;
 }
 
 .back-link {
@@ -854,8 +854,12 @@ textarea:focus {
 .detail-copy h2 {
   margin: 0;
   color: var(--text-strong);
-  font-size: clamp(2.2rem, 6vw, 4.7rem);
-  line-height: 0.98;
+  font-size: clamp(1.55rem, 3vw, 2.45rem);
+  line-height: 1;
+}
+
+.custom-product-title {
+  font-size: clamp(1.35rem, 2.2vw, 1.9rem) !important;
 }
 
 .detail-copy p {
@@ -867,7 +871,7 @@ textarea:focus {
 .price-line {
   display: grid;
   gap: 2px;
-  padding: 14px;
+  padding: 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface-2);
@@ -875,7 +879,7 @@ textarea:focus {
 
 .price-line span {
   color: var(--warm);
-  font-size: 1.65rem;
+  font-size: 1.45rem;
   font-weight: 950;
 }
 
@@ -886,29 +890,107 @@ textarea:focus {
 
 .variant-row {
   display: grid;
-  gap: 10px;
+  gap: 7px;
 }
 
 .variant-options {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
 }
 
 .variant-options button {
-  display: flex;
-  min-height: 52px;
+  display: inline-flex;
+  min-height: 42px;
   align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  padding: 10px 14px;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface-2);
   color: var(--text);
   cursor: pointer;
-  font-weight: 900;
-  text-align: start;
+  font-size: 0.9rem;
+  font-weight: 850;
+  text-align: center;
+}
+
+.detail-short-desc {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 0.95rem;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.custom-upload-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.size-guide-button {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--field-bg);
+  color: var(--text-strong);
+  cursor: pointer;
+  font-weight: 950;
+}
+
+.size-guide-button.is-open {
+  border-color: var(--accent);
+}
+
+.modal-open {
+  overflow: hidden;
+}
+
+.size-guide-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.size-guide-modal[hidden] {
+  display: none;
+}
+
+.size-guide-preview {
+  position: relative;
+  width: min(94vw, 980px);
+  max-height: 92vh;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.size-guide-preview img {
+  width: 100%;
+  max-height: 92vh;
+  object-fit: contain;
+}
+
+.size-guide-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  background: var(--text-strong);
+  color: var(--bg);
 }
 
 .variant-options button.is-selected {
@@ -917,9 +999,12 @@ textarea:focus {
   color: var(--accent-text);
 }
 
-.variant-options button>span:not(.dot) {
-  display: grid;
-  gap: 2px;
+.size-options {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.frame-options {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .choice-hint {
@@ -1040,6 +1125,23 @@ textarea:focus {
 .cart-items {
   display: grid;
   gap: 10px;
+}
+
+.cart-fee-summary {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 10px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.cart-fee-summary strong {
+  color: var(--text-strong);
 }
 
 .cart-item {
@@ -1207,7 +1309,7 @@ textarea:focus {
 
 .direct-checkout-form {
   margin-top: 18px !important;
-  padding: 16px !important;
+  padding: 14px !important;
   border: 1px solid var(--line) !important;
   border-radius: var(--radius) !important;
   background: var(--surface-2) !important;
@@ -1366,6 +1468,7 @@ textarea:focus {
 }
 
 @keyframes float-poster {
+
   0%,
   100% {
     translate: 0 0;
@@ -1377,6 +1480,7 @@ textarea:focus {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -1409,7 +1513,8 @@ textarea:focus {
   }
 
   .detail {
-    grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.1fr);
+    grid-template-columns: minmax(360px, 1.18fr) minmax(300px, 0.82fr);
+    align-items: start;
   }
 
   .variant-options {
@@ -1593,7 +1698,61 @@ textarea:focus {
   }
 
   .detail-main-image {
-    min-height: 330px;
+    min-height: 260px;
+  }
+
+  .detail-main-image img {
+    width: min(70%, 230px);
+  }
+
+  .detail-main-image.frame-black img,
+  .detail-main-image.frame-white img,
+  .detail-main-image.frame-wood img {
+    border-width: 12px;
+    border-bottom-width: 18px;
+  }
+
+  .thumb-row {
+    grid-template-columns: repeat(auto-fit, minmax(58px, 1fr));
+  }
+
+  .detail-copy {
+    gap: 10px;
+  }
+
+  .detail-copy h2 {
+    font-size: 1.55rem;
+  }
+
+  .custom-product-title {
+    font-size: 1.25rem !important;
+  }
+
+  .price-line {
+    padding: 10px;
+  }
+
+  .price-line span {
+    font-size: 1.25rem;
+  }
+
+  .detail-short-desc {
+    font-size: 0.86rem;
+    -webkit-line-clamp: 2;
+  }
+
+  .variant-options button {
+    min-height: 38px;
+    padding: 0 8px;
+    font-size: 0.78rem;
+  }
+
+  .size-options {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .frame-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .cart-item {
