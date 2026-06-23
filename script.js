@@ -1252,6 +1252,7 @@ function renderDetail(productId) {
               <input type="file" accept="image/*" data-upload-design>
             </label>
             ${state.customUpload ? `
+              <button class="detail-add" type="button" data-detail-add>${t("detailAddBtn")}</button>
               <button class="remove-upload-btn" type="button" data-remove-upload>${state.lang === "ar" ? "إزالة التصميم" : "Remove design"}</button>
             ` : ""}
           </div>
@@ -1683,7 +1684,7 @@ async function sendWhatsAppOrder() {
 
   setTimeout(() => {
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank", "noopener,noreferrer");
+    window.location.href = url;
     setUploadProgress(0, false);
     resetCartAfterOrder();
   }, 1500);
