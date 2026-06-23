@@ -1,5 +1,6 @@
 const WHATSAPP_NUMBER = "201010414187";
 const DELIVERY_FEE = 35;
+const POSTER_FALLBACK_IMAGE = "assets/poster-lab-logo.png";
 const frameOptions = {
   None: { label: "Poster only", price: 0, hint: "Poster only, no frame" },
   Black: { label: "Black frame", price: 120 },
@@ -402,6 +403,216 @@ const products = [
     frames: ["None", "Black", "White", "Wood"],
     description: "A three-image Yellow Porsche poster set with bright racing energy.",
     descriptionAr: "مجموعة بثلاث صور لبوستر بورشه صفراء بطاقة سباقية مشرقة."
+  },
+  {
+    id: "atelier-splash",
+    name: "Atelier Splash",
+    nameAr: "أتولييه سبلاش",
+    category: "paint",
+    tag: "Studio art",
+    tagAr: "فن ستوديو",
+    image: "assets/atelier-splash.png",
+    gallery: ["assets/atelier-splash.png"],
+    basePrice: 50,
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
+    frames: ["None", "Black", "White", "Wood"],
+    description: "Bright painterly motion with a clean frame-friendly layout.",
+    descriptionAr: "حركة لونية مبهجة بتكوين مناسب جدًا للتأطير."
+  },
+  {
+    id: "classic-redline",
+    name: "Classic Redline",
+    nameAr: "كلاسيك ريدلاين",
+    category: "cars",
+    tag: "Car poster",
+    tagAr: "بوستر سيارة",
+    image: "assets/classic-redline.png",
+    gallery: ["assets/classic-redline.png"],
+    basePrice: 50,
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
+    frames: ["None", "Black", "White", "Wood"],
+    description: "A sharp monochrome racing poster that works well in black frames.",
+    descriptionAr: "بوستر سباق أحادي اللون يبدو أنيقًا داخل الإطار الأسود."
+  },
+  {
+    id: "color-riot",
+    name: "Color Riot",
+    nameAr: "كولور رايوت",
+    category: "abstract",
+    tag: "Abstract art",
+    tagAr: "فن تجريدي",
+    image: "assets/color-riot.png",
+    gallery: ["assets/color-riot.png"],
+    basePrice: 50,
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
+    frames: ["None", "Black", "White", "Wood"],
+    description: "A loud color splash print for playful rooms and studios.",
+    descriptionAr: "طباعة تجريدية مليئة بالألوان للمساحات الحيوية."
+  },
+  {
+    id: "gallery-wave",
+    name: "Gallery Wave",
+    nameAr: "غاليري ويف",
+    category: "paint",
+    tag: "Art print",
+    tagAr: "طباعة فنية",
+    image: "assets/gallery-wave.png",
+    gallery: ["assets/gallery-wave.png"],
+    basePrice: 50,
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
+    frames: ["None", "Black", "White", "Wood"],
+    description: "A calm framed wave print with a soft gallery look.",
+    descriptionAr: "طباعة أمواج هادئة بطابع مناسب للمعارض والإطارات."
+  },
+  {
+    id: "midnight-turbo",
+    name: "Midnight Turbo",
+    nameAr: "ميدنايت تيربو",
+    category: "cars",
+    tag: "Car poster",
+    tagAr: "بوستر سيارة",
+    image: "assets/midnight-turbo.png",
+    gallery: ["assets/midnight-turbo.png"],
+    basePrice: 50,
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
+    frames: ["None", "Black", "White", "Wood"],
+    description: "A darker performance poster that feels premium in a frame.",
+    descriptionAr: "بوستر أداء داكن يمنح الإطار مظهرًا فاخرًا."
+  },
+  {
+    id: "neon-drift",
+    name: "Neon Drift",
+    nameAr: "نيون دريفت",
+    category: "cars",
+    tag: "Car poster",
+    tagAr: "بوستر سيارة",
+    image: "assets/neon-drift.png",
+    gallery: ["assets/neon-drift.png"],
+    basePrice: 50,
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
+    frames: ["None", "Black", "White", "Wood"],
+    description: "A neon-toned racing poster with a bold street style.",
+    descriptionAr: "بوستر سباقي بنكهة نيون ولمسة شارع جريئة."
+  },
+  {
+    id: "orange-f1",
+    name: "Orange F1",
+    nameAr: "أورنج إف 1",
+    category: "cars",
+    tag: "F1 poster",
+    tagAr: "بوستر فورمولا 1",
+    image: "assets/Orange F1.png",
+    gallery: ["assets/Orange F1.png"],
+    basePrice: 50,
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
+    frames: ["None", "Black", "White", "Wood"],
+    description: "Fast orange racing art for a clean modern wall.",
+    descriptionAr: "فن سباقي برتقالي سريع يناسب الجدران العصرية."
+  },
+  {
+    id: "yellow-cadillac-landscape",
+    name: "Yellow Cadillac Landscape",
+    nameAr: "منظر كاديلاك أصفر",
+    category: "cars",
+    tag: "Landscape poster",
+    tagAr: "بوستر منظر",
+    image: "assets/Yellow Cadillac Landscape.png",
+    gallery: ["assets/Yellow Cadillac Landscape.png"],
+    basePrice: 50,
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
+    frames: ["None", "Black", "White", "Wood"],
+    description: "A cinematic landscape-style car print with room for framing.",
+    descriptionAr: "طباعة سيارة بأسلوب سينمائي مناسب جدًا للتأطير."
+  },
+  {
+    id: "redbull-night-shift",
+    name: "Red Bull Night Shift",
+    nameAr: "ريد بول نايت شفت",
+    category: "cars",
+    tag: "Racing poster",
+    tagAr: "بوستر سباق",
+    image: "assets/Dark Blue RedBull.png",
+    gallery: ["assets/Dark Blue RedBull.png"],
+    basePrice: 50,
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
+    frames: ["None", "Black", "White", "Wood"],
+    description: "A dark racing poster that looks clean in minimal interiors.",
+    descriptionAr: "بوستر سباق داكن يبدو نظيفًا في المساحات البسيطة."
+  },
+  {
+    id: "modern-monaliza",
+    name: "Win The Day",
+    nameAr: "اكسب اليوم",
+    category: "abstract",
+    tag: "Quote poster",
+    tagAr: "بوستر اقتباس",
+    image: "assets/Monaliza.png",
+    gallery: ["assets/Monaliza.png"],
+    basePrice: 50,
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
+    frames: ["None", "Black", "White", "Wood"],
+    description: "A clean quote-style poster for focus and momentum.",
+    descriptionAr: "بوستر اقتباس نظيف يمنح المساحة طاقة وتركيزًا."
+  },
+  {
+    id: "spider-verse-wall",
+    name: "Mamba Mentality",
+    nameAr: "عقلية مامبا",
+    category: "abstract",
+    tag: "Quote poster",
+    tagAr: "بوستر اقتباس",
+    image: "assets/Spiderman.png",
+    gallery: ["assets/Spiderman.png"],
+    basePrice: 50,
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
+    frames: ["None", "Black", "White", "Wood"],
+    description: "A basketball quote poster with a strong frame-ready look.",
+    descriptionAr: "بوستر اقتباس بسمة كرة السلة ومظهر مناسب للتأطير."
+  },
+  {
+    id: "cosmic-orbit",
+    name: "Just Do It",
+    nameAr: "فقط افعلها",
+    category: "abstract",
+    tag: "Quote poster",
+    tagAr: "بوستر اقتباس",
+    image: "assets/Space Astronauts.png",
+    gallery: ["assets/Space Astronauts.png"],
+    basePrice: 50,
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
+    frames: ["None", "Black", "White", "Wood"],
+    description: "A football-inspired quote poster with simple wall energy.",
+    descriptionAr: "بوستر اقتباس مستوحى من كرة القدم بطاقة بسيطة وواضحة."
+  },
+  {
+    id: "ferrari-heat",
+    name: "Ferrari Heat",
+    nameAr: "فيراري هيت",
+    category: "cars",
+    tag: "Car poster",
+    tagAr: "بوستر سيارة",
+    image: "assets/Red Ferrari.png",
+    gallery: ["assets/Red Ferrari.png"],
+    basePrice: 50,
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
+    frames: ["None", "Black", "White", "Wood"],
+    description: "A sharp Ferrari print with a strong display-frame look.",
+    descriptionAr: "طباعة فيراري واضحة ومناسبة جدًا للإطار."
+  },
+  {
+    id: "voxel-heroes",
+    name: "Game Time",
+    nameAr: "وقت اللعب",
+    category: "abstract",
+    tag: "Quote poster",
+    tagAr: "بوستر اقتباس",
+    image: "assets/Minecraft Avengers.png",
+    gallery: ["assets/Minecraft Avengers.png"],
+    basePrice: 50,
+    sizes: { "20x30": 50, "30x40": 60, "40x50": 70, "50x70": 90 },
+    frames: ["None", "Black", "White", "Wood"],
+    description: "A sports quote poster with a focused, modern wall feel.",
+    descriptionAr: "بوستر اقتباس رياضي بمظهر حديث ومركز."
   }
 ];
 
@@ -808,7 +1019,7 @@ function renderProducts() {
       <article class="product-card" style="--delay: ${index * 65}ms">
         <a class="product-media" href="product.html?id=${product.id}" aria-label="View ${name}">
           <span class="frame-preview frame-preview-black"></span>
-          <img src="${product.image}" loading="lazy" decoding="async" alt="${name} ${currentLang === "ar" ? "بوستر مؤطر" : "framed poster"}">
+          <img src="${product.image}" loading="lazy" decoding="async" alt="${name} ${currentLang === "ar" ? "بوستر مؤطر" : "framed poster"}" onerror="this.onerror=null;this.src='${POSTER_FALLBACK_IMAGE}'">
           <span class="product-tag">${tag}</span>
           ${galleryBadge(product) ? `<span class="product-gallery-badge">${galleryBadge(product)}</span>` : ""}
         </a>
@@ -856,8 +1067,17 @@ function renderDetail(productId) {
       <article class="detail product-detail-layout">
       <div class="detail-gallery">
         <div class="detail-main-image frame-${state.detailFrame.toLowerCase()}">
-          <img id="detailMainImage" src="${previewImage}" loading="eager" decoding="async" fetchpriority="high" alt="${name} ${currentLang === "ar" ? "معرض البوستر" : "framed poster gallery image"}">
+          <img id="detailMainImage" src="${previewImage}" loading="eager" decoding="async" fetchpriority="high" alt="${name} ${currentLang === "ar" ? "معرض البوستر" : "framed poster gallery image"}" onerror="this.onerror=null;this.src='${POSTER_FALLBACK_IMAGE}'">
         </div>
+        ${product.gallery && product.gallery.length > 1 ? `
+          <div class="thumb-row">
+            ${product.gallery.map((image) => `
+              <button type="button" class="${image === previewImage ? "is-active" : ""}" data-gallery-image="${image}" aria-label="Show gallery image">
+                <img src="${image}" loading="lazy" decoding="async" alt="${name} thumbnail" onerror="this.onerror=null;this.src='${POSTER_FALLBACK_IMAGE}'">
+              </button>
+            `).join("")}
+          </div>
+        ` : ""}
       </div>
       <div class="detail-copy product-order-panel">
         <a class="back-link" href="index.html">${t("backToShop")}</a>
@@ -997,7 +1217,7 @@ function renderCart() {
     const name = getProductName(product);
     return `
       <article class="cart-item">
-        <img src="${displayImageForItem(product, item)}" alt="${name}">
+        <img src="${displayImageForItem(product, item)}" alt="${name}" onerror="this.onerror=null;this.src='${POSTER_FALLBACK_IMAGE}'">
         <div>
           <h3>${name}</h3>
           <p>${item.size} ${currentLang === "ar" ? "سم" : "cm"} / ${getFrameOptionLabel(item.frame)}</p>
@@ -1182,7 +1402,7 @@ async function fetchAndUploadImage(imgUrl, fileName) {
     return await uploadImageToTemporaryServer(blob, fileName);
   } catch (err) {
     console.error("Failed to fetch/upload image:", imgUrl, err);
-    return null;
+    return imgUrl;
   }
 }
 
