@@ -1120,6 +1120,20 @@ function showOurWorkImage(index) {
   }
 }
 
+function updateOurWorkReelToggleLabel() {
+  if (!ourWorkReelControls) return;
+  const toggle = ourWorkReelControls.querySelector("[data-work-reel-toggle]");
+  if (!toggle) return;
+  const currentLang = state.lang || "en";
+  if (ourWorkReelTimer) {
+    toggle.textContent = currentLang === "ar" ? "إيقاف" : "Pause";
+    toggle.setAttribute("aria-label", currentLang === "ar" ? "إيقاف الاستعراض" : "Pause reel");
+  } else {
+    toggle.textContent = currentLang === "ar" ? "تشغيل" : "Play";
+    toggle.setAttribute("aria-label", currentLang === "ar" ? "تشغيل الاستعراض" : "Play reel");
+  }
+}
+
 function stopOurWorkReel() {
   if (ourWorkReelTimer) {
     window.clearInterval(ourWorkReelTimer);
@@ -1127,9 +1141,8 @@ function stopOurWorkReel() {
   }
   if (ourWorkReelControls) {
     ourWorkReelControls.setAttribute("data-playing", "false");
-    const toggle = ourWorkReelControls.querySelector("[data-work-reel-toggle]");
-    if (toggle) toggle.textContent = "Play";
   }
+  updateOurWorkReelToggleLabel();
 }
 
 function startOurWorkReel() {
@@ -1140,9 +1153,8 @@ function startOurWorkReel() {
   }, 2800);
   if (ourWorkReelControls) {
     ourWorkReelControls.setAttribute("data-playing", "true");
-    const toggle = ourWorkReelControls.querySelector("[data-work-reel-toggle]");
-    if (toggle) toggle.textContent = "Pause";
   }
+  updateOurWorkReelToggleLabel();
 }
 
 function renderOurWork() {
@@ -1156,6 +1168,7 @@ function renderOurWork() {
 
   showOurWorkImage(0);
   startOurWorkReel();
+  updateOurWorkReelToggleLabel();
 }
 
 function renderDetail(productId) {
@@ -1193,19 +1206,7 @@ function renderDetail(productId) {
             `).join("")}
           </div>
         ` : ""}
-        <div class="real-quality-strip">
-          <div class="real-quality-strip__copy">
-            <p class="eyebrow">${t("ourWorkEyebrow")}</p>
-            <strong>${t("ourWorkTitle")}</strong>
-            <p>${t("ourWorkSubtitle")}</p>
-          </div>
-          <a class="watch-quality-link" href="our-work.html">${t("ourWorkButton")}</a>
-        </div>
-        <div class="real-quality-strip__thumbs" aria-label="${t("ourWorkGalleryLabel")}">
-          ${OUR_WORK_MEDIA.slice(0, 4).map((media) => `
-            <img src="${media.src}" loading="lazy" decoding="async" alt="${media.title}" onerror="this.onerror=null;this.src='${POSTER_FALLBACK_IMAGE}'">
-          `).join("")}
-        </div>
+        <a class="watch-quality-link detail-work-link" href="our-work.html" data-t="ourWorkButton">${t("ourWorkButton")}</a>
       </div>
       <div class="detail-copy product-order-panel">
         <a class="back-link" href="index.html">${t("backToShop")}</a>

@@ -1,9 +1,10 @@
-const CACHE_NAME = 'poster-lab-store-v11';
+const CACHE_NAME = 'poster-lab-store-v12';
 const IMAGE_CACHE_NAME = 'poster-lab-images-v1';
 const ASSETS = [
   './',
   './index.html',
   './product.html',
+  './our-work.html',
   './styles.css',
   './script.js',
   './assets/poster-lab-logo.png',
@@ -32,7 +33,17 @@ const ASSETS = [
   './assets/Red Ferrari 3/upscalemedia-transformed ferrari 3 (3).png',
   './assets/Yellow Porsche 3/upscalemedia-transformed yellow 3_01.png',
   './assets/Yellow Porsche 3/upscalemedia-transformed yellow 3_02.png',
-  './assets/Yellow Porsche 3/upscalemedia-transformed yellow 3_03.png'
+  './assets/Yellow Porsche 3/upscalemedia-transformed yellow 3_03.png',
+  './assets/our-work/our-work-01.jpg',
+  './assets/our-work/our-work-02.png',
+  './assets/our-work/our-work-03.png',
+  './assets/our-work/our-work-04.png',
+  './assets/our-work/our-work-05.png',
+  './assets/our-work/our-work-06.png',
+  './assets/our-work/our-work-07.png',
+  './assets/our-work/our-work-08.png',
+  './assets/our-work/our-work-09.png',
+  './assets/our-work/our-work-10.png'
 ];
 
 self.addEventListener('install', (event) => {
