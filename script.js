@@ -1127,6 +1127,8 @@ function stopOurWorkReel() {
   }
   if (ourWorkReelControls) {
     ourWorkReelControls.setAttribute("data-playing", "false");
+    const toggle = ourWorkReelControls.querySelector("[data-work-reel-toggle]");
+    if (toggle) toggle.textContent = "Play";
   }
 }
 
@@ -1138,6 +1140,8 @@ function startOurWorkReel() {
   }, 2800);
   if (ourWorkReelControls) {
     ourWorkReelControls.setAttribute("data-playing", "true");
+    const toggle = ourWorkReelControls.querySelector("[data-work-reel-toggle]");
+    if (toggle) toggle.textContent = "Pause";
   }
 }
 

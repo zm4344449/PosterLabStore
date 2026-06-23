@@ -984,6 +984,184 @@ textarea:focus {
   object-fit: contain;
 }
 
+.real-quality-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.real-quality-strip__copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.real-quality-strip__copy strong {
+  color: var(--text-strong);
+  font-size: 0.95rem;
+  font-weight: 950;
+}
+
+.real-quality-strip__copy p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.watch-quality-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 12px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: 0.82rem;
+  font-weight: 950;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.real-quality-strip__thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.real-quality-strip__thumbs img {
+  aspect-ratio: 4 / 5;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  object-fit: cover;
+  background: var(--surface-2);
+}
+
+.our-work-shell {
+  display: grid;
+  gap: 18px;
+}
+
+.our-work-hero {
+  display: grid;
+  gap: 10px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--small-shadow);
+}
+
+.our-work-hero h1 {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1;
+}
+
+.our-work-hero p {
+  margin: 0;
+  color: var(--muted);
+  max-width: 64ch;
+}
+
+.our-work-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.our-work-reel {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--small-shadow);
+}
+
+.our-work-reel-stage {
+  display: grid;
+  min-height: 360px;
+  place-items: center;
+  border-radius: var(--radius);
+  background: var(--poster-wall);
+  overflow: hidden;
+}
+
+.our-work-reel-stage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.our-work-reel-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.our-work-reel-meta strong {
+  color: var(--text-strong);
+  font-size: 0.95rem;
+}
+
+.our-work-reel-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.our-work-reel-controls button {
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.our-work-reel-controls[data-playing="true"] [data-work-reel-toggle]::after {
+  content: "Pause";
+}
+
+.our-work-reel-controls[data-playing="false"] [data-work-reel-toggle]::after {
+  content: "Play";
+}
+
+.our-work-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.our-work-tile {
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: var(--small-shadow);
+}
+
+.our-work-tile img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
 .size-guide-close {
   position: absolute;
   top: 10px;
@@ -1712,6 +1890,27 @@ textarea:focus {
     border-bottom-width: 18px;
   }
 
+  .real-quality-strip {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .watch-quality-link {
+    width: 100%;
+  }
+
+  .real-quality-strip__thumbs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .our-work-reel-stage {
+    min-height: 240px;
+  }
+
+  .our-work-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .thumb-row {
     grid-template-columns: repeat(auto-fit, minmax(58px, 1fr));
   }
@@ -1776,5 +1975,9 @@ textarea:focus {
   .product-summary,
   .swatch-row {
     display: none;
+  }
+
+  .our-work-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
