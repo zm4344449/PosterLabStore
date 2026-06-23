@@ -112,6 +112,12 @@ const translations = {
     sizeGuideTitle: "Size guide",
     sizeGuideHint: "Choose the size that fits your wall.",
     addToCartSimple: "Add to cart",
+    ourWorkTitle: "Our Work",
+    ourWorkEyebrow: "Real quality captures",
+    ourWorkSubtitle: "See the print finish, frame depth, and room styling from real photos.",
+    ourWorkButton: "Watch real quality video",
+    ourWorkGalleryLabel: "Captured photos",
+    ourWorkReelLabel: "Quality reel",
   },
   ar: {
     brandTitle: "بوستر لاب ستور",
@@ -216,6 +222,12 @@ const translations = {
     sizeGuideTitle: "دليل المقاسات",
     sizeGuideHint: "اختار المقاس المناسب للحائط عندك.",
     addToCartSimple: "أضف للسلة",
+    ourWorkTitle: "شغلنا",
+    ourWorkEyebrow: "صور جودة حقيقية",
+    ourWorkSubtitle: "شوف خامة الطباعة وعمق البرواز وتنسيق الغرفة من صور حقيقية.",
+    ourWorkButton: "شاهد فيديو الجودة الحقيقية",
+    ourWorkGalleryLabel: "الصور المصورة",
+    ourWorkReelLabel: "استعراض الجودة",
   }
 };
 
@@ -616,6 +628,49 @@ const products = [
   }
 ];
 
+const OUR_WORK_MEDIA = [
+  {
+    src: "assets/our-work/our-work-01.jpg",
+    title: "Framed room capture 01"
+  },
+  {
+    src: "assets/our-work/our-work-02.png",
+    title: "Framed room capture 02"
+  },
+  {
+    src: "assets/our-work/our-work-03.png",
+    title: "Framed room capture 03"
+  },
+  {
+    src: "assets/our-work/our-work-04.png",
+    title: "Framed room capture 04"
+  },
+  {
+    src: "assets/our-work/our-work-05.png",
+    title: "Framed room capture 05"
+  },
+  {
+    src: "assets/our-work/our-work-06.png",
+    title: "Framed room capture 06"
+  },
+  {
+    src: "assets/our-work/our-work-07.png",
+    title: "Framed room capture 07"
+  },
+  {
+    src: "assets/our-work/our-work-08.png",
+    title: "Framed room capture 08"
+  },
+  {
+    src: "assets/our-work/our-work-09.png",
+    title: "Framed room capture 09"
+  },
+  {
+    src: "assets/our-work/our-work-10.png",
+    title: "Framed room capture 10"
+  }
+];
+
 const LOCAL_STORAGE_LANG_KEY = "poster-lab-lang";
 const LOCAL_STORAGE_THEME_KEY = "poster-lab-theme";
 const LOCAL_STORAGE_UPLOAD_KEY = "poster-lab-custom-upload";
@@ -768,6 +823,12 @@ const checkoutForm = document.querySelector("#checkoutForm");
 const paymentConfirmation = document.querySelector("#paymentConfirmation");
 const confirmationSummary = document.querySelector("#confirmationSummary");
 const toastContainer = document.querySelector(".toast-notification");
+const ourWorkGrid = document.querySelector("[data-our-work-grid]");
+const ourWorkReelImage = document.querySelector("[data-our-work-reel-image]");
+const ourWorkReelCaption = document.querySelector("[data-our-work-reel-caption]");
+const ourWorkReelControls = document.querySelector("[data-our-work-reel-controls]");
+let ourWorkReelIndex = 0;
+let ourWorkReelTimer = null;
 
 function getProductName(product) {
   const currentLang = state.lang || "en";
@@ -949,6 +1010,9 @@ function toggleLanguage() {
   if (state.selectedProduct) {
     renderDetail(state.selectedProduct);
   }
+  if (ourWorkGrid) {
+    renderOurWork();
+  }
 }
 
 function preloadProductImages(list = products) {
@@ -1043,6 +1107,53 @@ function renderProducts() {
   }).join("");
 }
 
+function showOurWorkImage(index) {
+  if (!OUR_WORK_MEDIA.length) return;
+  ourWorkReelIndex = (index + OUR_WORK_MEDIA.length) % OUR_WORK_MEDIA.length;
+  const media = OUR_WORK_MEDIA[ourWorkReelIndex];
+  if (ourWorkReelImage) {
+    ourWorkReelImage.src = media.src;
+    ourWorkReelImage.alt = media.title;
+  }
+  if (ourWorkReelCaption) {
+    ourWorkReelCaption.textContent = media.title;
+  }
+}
+
+function stopOurWorkReel() {
+  if (ourWorkReelTimer) {
+    window.clearInterval(ourWorkReelTimer);
+    ourWorkReelTimer = null;
+  }
+  if (ourWorkReelControls) {
+    ourWorkReelControls.setAttribute("data-playing", "false");
+  }
+}
+
+function startOurWorkReel() {
+  if (!ourWorkReelImage || !OUR_WORK_MEDIA.length) return;
+  stopOurWorkReel();
+  ourWorkReelTimer = window.setInterval(() => {
+    showOurWorkImage(ourWorkReelIndex + 1);
+  }, 2800);
+  if (ourWorkReelControls) {
+    ourWorkReelControls.setAttribute("data-playing", "true");
+  }
+}
+
+function renderOurWork() {
+  if (!ourWorkGrid) return;
+
+  ourWorkGrid.innerHTML = OUR_WORK_MEDIA.map((media, index) => `
+    <button type="button" class="our-work-tile" data-work-slide="${index}" aria-label="${media.title}">
+      <img src="${media.src}" loading="lazy" decoding="async" alt="${media.title}" onerror="this.onerror=null;this.src='${POSTER_FALLBACK_IMAGE}'">
+    </button>
+  `).join("");
+
+  showOurWorkImage(0);
+  startOurWorkReel();
+}
+
 function renderDetail(productId) {
   const product = getProduct(productId);
   if (!product) {
@@ -1078,6 +1189,19 @@ function renderDetail(productId) {
             `).join("")}
           </div>
         ` : ""}
+        <div class="real-quality-strip">
+          <div class="real-quality-strip__copy">
+            <p class="eyebrow">${t("ourWorkEyebrow")}</p>
+            <strong>${t("ourWorkTitle")}</strong>
+            <p>${t("ourWorkSubtitle")}</p>
+          </div>
+          <a class="watch-quality-link" href="our-work.html">${t("ourWorkButton")}</a>
+        </div>
+        <div class="real-quality-strip__thumbs" aria-label="${t("ourWorkGalleryLabel")}">
+          ${OUR_WORK_MEDIA.slice(0, 4).map((media) => `
+            <img src="${media.src}" loading="lazy" decoding="async" alt="${media.title}" onerror="this.onerror=null;this.src='${POSTER_FALLBACK_IMAGE}'">
+          `).join("")}
+        </div>
       </div>
       <div class="detail-copy product-order-panel">
         <a class="back-link" href="index.html">${t("backToShop")}</a>
@@ -1680,6 +1804,33 @@ document.addEventListener("click", (event) => {
   const detailAdd = event.target.closest("[data-detail-add]");
   if (detailAdd) addToCart(state.selectedProduct, state.detailSize, state.detailFrame);
 
+  const workSlide = event.target.closest("[data-work-slide]");
+  if (workSlide) {
+    showOurWorkImage(Number(workSlide.dataset.workSlide || 0));
+    startOurWorkReel();
+  }
+
+  const workReelToggle = event.target.closest("[data-work-reel-toggle]");
+  if (workReelToggle) {
+    if (ourWorkReelTimer) {
+      stopOurWorkReel();
+    } else {
+      startOurWorkReel();
+    }
+  }
+
+  const workReelPrev = event.target.closest("[data-work-reel-prev]");
+  if (workReelPrev) {
+    showOurWorkImage(ourWorkReelIndex - 1);
+    startOurWorkReel();
+  }
+
+  const workReelNext = event.target.closest("[data-work-reel-next]");
+  if (workReelNext) {
+    showOurWorkImage(ourWorkReelIndex + 1);
+    startOurWorkReel();
+  }
+
   const minusButton = event.target.closest("[data-qty-minus]");
   if (minusButton) updateQuantity(minusButton.dataset.qtyMinus, -1);
 
@@ -1736,6 +1887,7 @@ if (checkoutForm) checkoutForm.addEventListener("submit", handleCheckout);
 updateLanguageUI();
 updateThemeUI();
 if (productGrid) renderProducts();
+if (ourWorkGrid) renderOurWork();
 renderCart();
 initializeCartImages();
 preloadProductImages();
