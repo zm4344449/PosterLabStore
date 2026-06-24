@@ -1691,9 +1691,12 @@ async function sendWhatsAppOrder() {
     showToast(isAr ? "حدث خطأ أثناء رفع بعض الصور" : "Error uploading some images");
   }
 
-  await new Promise((resolve) => window.requestAnimationFrame(() => resolve()));
-  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-  window.location.replace(url);
+  setTimeout(() => {
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+    setUploadProgress(0, false);
+    resetCartAfterOrder();
+  }, 1500);
 }
 
 const searchInput = document.querySelector("#searchInput");
