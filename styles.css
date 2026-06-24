@@ -402,7 +402,6 @@ label span,
   position: absolute;
   width: min(58vw, 330px);
   border: 12px solid #151515;
-  border-bottom-width: 22px;
   border-radius: 3px;
   background: var(--poster-mat);
   box-shadow: var(--shadow);
@@ -590,10 +589,10 @@ textarea:focus {
   width: min(76%, 270px);
   aspect-ratio: 4 / 5;
   border: 12px solid #141414;
-  border-bottom-width: 22px;
   border-radius: 3px;
   background: var(--poster-mat);
-  object-fit: cover;
+  object-fit: inherit;
+  object-position: center;
   box-shadow: 0 22px 40px rgba(0, 0, 0, 0.34);
   transition: transform 220ms ease;
 }
@@ -786,14 +785,13 @@ textarea:focus {
 .detail-main-image img {
   width: min(78%, 520px);
   aspect-ratio: 4 / 5;
-  object-fit: cover;
+  object-position: center;
   background: var(--poster-mat);
   box-shadow: var(--shadow);
 }
 
 .detail-main-image.frame-black img {
   border: 22px solid #111;
-  border-bottom-width: 34px;
 }
 
 .detail-main-image.frame-white img {
@@ -832,7 +830,8 @@ textarea:focus {
 .thumb-row img {
   width: 100%;
   aspect-ratio: 1;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
 }
 
 .detail-copy {
@@ -1201,7 +1200,9 @@ textarea:focus {
   width: 72px;
   height: 72px;
   border-radius: var(--radius);
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
+  background: var(--surface);
 }
 
 .upload-box span {

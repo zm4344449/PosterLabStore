@@ -1,6 +1,7 @@
 const WHATSAPP_NUMBER = "201010414187";
 const DELIVERY_FEE = 35;
 const POSTER_FALLBACK_IMAGE = "assets/poster-lab-logo.png";
+const CUSTOM_UPLOAD_ACCEPT = ".jpg,.jpeg,.png,.webp,.gif,.bmp,.avif,.heic,.heif,.tif,.tiff,image/*";
 const frameOptions = {
   None: { label: "Poster only", price: 0, hint: "Poster only, no frame" },
   Black: { label: "Black frame", price: 120 },
@@ -938,6 +939,12 @@ function galleryBadge(product) {
   return `${count} images`;
 }
 
+function sceneImageForIndex(index = 0) {
+  if (!OUR_WORK_MEDIA.length) return "";
+  const media = OUR_WORK_MEDIA[Math.abs(index) % OUR_WORK_MEDIA.length];
+  return media?.src || "";
+}
+
 function getFrameOptionLabel(frameKey) {
   const currentLang = state.lang || "en";
   if (currentLang === "ar") {
@@ -1078,10 +1085,11 @@ function renderProducts() {
     const name = getProductName(product);
     const tag = currentLang === "ar" && product.tagAr ? product.tagAr : product.tag;
     const desc = currentLang === "ar" && product.descriptionAr ? product.descriptionAr : product.description;
+    const sceneImage = sceneImageForIndex(index);
 
     return `
       <article class="product-card" style="--delay: ${index * 65}ms">
-        <a class="product-media" href="product.html?id=${product.id}" aria-label="View ${name}">
+        <a class="product-media" href="product.html?id=${product.id}" aria-label="View ${name}" style="${sceneImage ? `--scene-image: url('${sceneImage}')` : ""}">
           <span class="frame-preview frame-preview-black"></span>
           <img src="${product.image}" loading="lazy" decoding="async" alt="${name} ${currentLang === "ar" ? "بوستر مؤطر" : "framed poster"}" onerror="this.onerror=null;this.src='${POSTER_FALLBACK_IMAGE}'">
           <span class="product-tag">${tag}</span>
@@ -1191,10 +1199,11 @@ function renderDetail(productId) {
     document.title = `${name} — ${t("brandTitle")}`;
     productDetail.hidden = false;
     const previewImage = product.isCustom && state.customUpload ? state.customUpload.url : product.image;
+    const sceneImage = sceneImageForIndex(products.findIndex((item) => item.id === product.id));
     productDetail.innerHTML = `
       <article class="detail product-detail-layout">
       <div class="detail-gallery">
-        <div class="detail-main-image frame-${state.detailFrame.toLowerCase()}">
+        <div class="detail-main-image frame-${state.detailFrame.toLowerCase()}" style="${sceneImage ? `--scene-image: url('${sceneImage}')` : ""}">
           <img id="detailMainImage" src="${previewImage}" loading="eager" decoding="async" fetchpriority="high" alt="${name} ${currentLang === "ar" ? "معرض البوستر" : "framed poster gallery image"}" onerror="this.onerror=null;this.src='${POSTER_FALLBACK_IMAGE}'">
         </div>
         ${product.gallery && product.gallery.length > 1 ? `
@@ -1249,7 +1258,7 @@ function renderDetail(productId) {
                 <span>${state.customUpload ? t("detailSelectedFile") : t("detailUploadLabel")}</span>
                 <small>${state.customUpload ? state.customUpload.name : t("detailUploadHint")}</small>
               </div>
-              <input type="file" accept="image/*" data-upload-design>
+              <input type="file" accept="${CUSTOM_UPLOAD_ACCEPT}" data-upload-design>
             </label>
             ${state.customUpload ? `
               <button class="detail-add" type="button" data-detail-add>${t("detailAddBtn")}</button>
@@ -1682,12 +1691,9 @@ async function sendWhatsAppOrder() {
     showToast(isAr ? "حدث خطأ أثناء رفع بعض الصور" : "Error uploading some images");
   }
 
-  setTimeout(() => {
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-    window.location.href = url;
-    setUploadProgress(0, false);
-    resetCartAfterOrder();
-  }, 1500);
+  await new Promise((resolve) => window.requestAnimationFrame(() => resolve()));
+  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  window.location.replace(url);
 }
 
 const searchInput = document.querySelector("#searchInput");
